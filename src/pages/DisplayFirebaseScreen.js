@@ -34,7 +34,7 @@ export default function DisplayFirebaseScreen (){
                   <View style={{flexDirection:'row', height:80, borderBottomColor:'#323ca8', borderBottomWidth:2 ,marginVertical: 5, marginBottom: 5}}>
                     <View style={{width:'20%', flexDirection:'column', padding: 5, justifyContent:'center', alignItems:'center'}}>
                       <TouchableOpacity>
-                        <Text>Detalhes</Text>
+                        <Text>Detalhe</Text>
                       </TouchableOpacity>
                       
                       <TouchableOpacity>
