@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "225216503333",
+    "project_id": "banco-de-teste-1060a",
+    "storage_bucket": "banco-de-teste-1060a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:225216503333:android:d887fdedf0ef5359bda9cc",
+        "android_client_info": {
+          "package_name": "com.bravacore.imbranet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "225216503333-e6fpia15s1k2862q48rvgdnjvctqp460.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5s3w3Ux5-q2irtB8oDYJqkDjdsW2ZJXU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "225216503333-e6fpia15s1k2862q48rvgdnjvctqp460.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
