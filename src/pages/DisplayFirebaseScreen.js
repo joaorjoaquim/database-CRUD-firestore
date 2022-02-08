@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {AntDesign, Entypo} from '@expo/vector-icons';
-import database from '../services/firebaseConfig'
+import database from '../services/firebaseConfig';
 import CustomModal from "../components/CustomModal";
 
 export default function DisplayFirebaseScreen (){
