@@ -37,6 +37,16 @@ export default function DisplayFirebaseScreen (){
     setSelectedItem(false);
   };
 
+  const createList = (item) => {
+    const vet = ["Prestador de Serviço", "Código do Serviço", "Data", "CEP", "Logradouro", "Número", "Complemento", "Bairro", "Cidade", "Estado", "Descrição do Serviço"]
+    var listText = [];
+    vet.forEach(ele=>{
+      listText.push(
+        <Text style={styles.modalText}>`${ele}: `</Text>
+      )
+    })
+  };
+
   return (
       <View>
           <FlatList
@@ -45,56 +55,8 @@ export default function DisplayFirebaseScreen (){
               renderItem={({item}) => (
                   <View style={{flexDirection:'row', height:80, borderBottomColor:'#323ca8', borderBottomWidth:2 ,marginVertical: 5, marginBottom: 5}}>
                  
-
-                  {/* Modal do Editar*/}    
-                  <Modal
-                          animationType="fade"
-                          transparent={true}
-                          visible={modalEditVisible}
-                          onRequestClose={() => {
-                            Alert.alert("Modal has been closed.");
-                            setModalEditVisible(!modalEditVisible);
-                          }}
-                  >
-                      <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
-                          <Text style={styles.modalText}>Editar Informações </Text>
-                          <TouchableOpacity
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={() => setModalEditVisible(!modalEditVisible)}
-                          >
-                            <Text style={styles.textStyle}>Salvar</Text>
-                          </TouchableOpacity>
-                        </View>
-                      </View>
-                  </Modal> 
-
-                  {/* Modal do Deletar*/}  
-
-                  <Modal
-                          animationType="fade"
-                          transparent={true}
-                          visible={modalDeleteVisible}
-                          onRequestClose={() => {
-                            Alert.alert("Modal has been closed.");
-                            setModalDeleteVisible(!modalDeleteVisible);
-                          }}
-                  >
-                      <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
-                          <Text style={styles.modalText}>Você tem certeza que seja deletar essa Task?</Text>
-                          <TouchableOpacity
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={() => setModalDeleteVisible(!modalDeleteVisible)}
-                          >
-                            <Text style={styles.textStyle}>Sim</Text>
-                          </TouchableOpacity>
-                        </View>
-                      </View>
-                  </Modal> 
-
                     <View style={{width:'20%', flexDirection:'column', padding: 5, justifyContent:'space-between', alignItems:'center'}}>
-                      <TouchableOpacity onPress={() => handleOnSelectItem(item)}>
+                      <TouchableOpacity onPress={() => setModalInfoVisible(true)}>
                       <Entypo name="text-document" size={18} color="#323ca8"/>
                       </TouchableOpacity>
                       
@@ -118,12 +80,12 @@ export default function DisplayFirebaseScreen (){
                   
               )}
           />
-          {/* Modal do Detalhes*/}
+          {/* Modal do Detalhes - Component novo*/}
           <CustomModal isVisible={modalInfoVisible} selectedItem={selectedItem} onClose={handleOnCloseModal} />
       </View>
   );
 }
-  
+ {/* COMPONENT DO MODAL CUSTOMIZADO*/} 
 export function CustomModal(props) {
   const { isVisible, item, onClose,  /*...*/ } = props;
   const [modalInfoVisible, setModalInfoVisible] = useState(props.isVisible);
