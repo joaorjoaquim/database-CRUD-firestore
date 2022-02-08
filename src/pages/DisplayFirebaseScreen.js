@@ -15,7 +15,7 @@ export default function DisplayFirebaseScreen (){
   const [modalInfoVisible, setModalInfoVisible] = useState(false);
   const [modalEditVisible, setModalEditVisible] = useState(false);
   const [modalDeleteVisible, setModalDeleteVisible] = useState(false);
-
+  const [selectedItem, setSelectedItem] = useState(null);
 
   useEffect( () => {
       database.collection("Tasks").get()
@@ -29,6 +29,14 @@ export default function DisplayFirebaseScreen (){
           })
   }, []);
 
+  const handleOnSelectItem = (vis, item) => {
+    setSelectedItem(item);
+    setModalInfoVisible(vis);
+  };
+  const handleOnCloseModal = () => {
+    setSelectedItem(null);
+  };
+
   return (
       <View>
           <FlatList
@@ -36,28 +44,7 @@ export default function DisplayFirebaseScreen (){
               keyExtractor={(item, key) => `${key}`}
               renderItem={({item}) => (
                   <View style={{flexDirection:'row', height:80, borderBottomColor:'#323ca8', borderBottomWidth:2 ,marginVertical: 5, marginBottom: 5}}>
-                {/* Modal do Detalhes*/}
-                  <Modal
-                          animationType="fade"
-                          transparent={true}
-                          visible={modalInfoVisible}
-                          onRequestClose={() => {
-                            Alert.alert("Modal has been closed.");
-                            setModalInfoVisible(!modalInfoVisible);
-                          }}
-                  >
-                      <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
-                          <Text style={styles.modalText}>Hello World!</Text>
-                          <TouchableOpacity
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={() => setModalInfoVisible(!modalInfoVisible)}
-                          >
-                            <Text style={styles.textStyle}>Hide Modal</Text>
-                          </TouchableOpacity>
-                        </View>
-                      </View>
-                  </Modal> 
+                 
 
                   {/* Modal do Editar*/}    
                   <Modal
@@ -107,7 +94,7 @@ export default function DisplayFirebaseScreen (){
                   </Modal> 
 
                     <View style={{width:'20%', flexDirection:'column', padding: 5, justifyContent:'space-between', alignItems:'center'}}>
-                      <TouchableOpacity onPress={() => setModalInfoVisible(true)}>
+                      <TouchableOpacity onPress={() => handleOnSelectItem( true, item)}>
                       <Entypo name="text-document" size={18} color="#323ca8"/>
                       </TouchableOpacity>
                       
@@ -131,10 +118,44 @@ export default function DisplayFirebaseScreen (){
                   
               )}
           />
+          {/* Modal do Detalhes*/}
+          <CustomModal isVisible={selectedItem} selectedItem={selectedItem} onClose={handleOnCloseModal} />
       </View>
   );
 }
-     
+  
+export function CustomModal(props) {
+  const { isVisible, item, onClose,  /*...*/ } = props;
+
+  return (
+    <Modal visible={isVisible} onRequestClose={onClose} animationType="fade" transparent={true}>
+      <View style={styles.centeredView}>
+                        <View style={styles.modalView}>
+                          <View style={{alignItems:'flex-start'}}>
+                            <Text style={styles.modalText}>Prestador de Serviço:</Text>
+                            <Text style={styles.modalText}>Código do Serviço: </Text>
+                            <Text style={styles.modalText}>Data: </Text>
+                            <Text style={styles.modalText}>CEP: </Text>
+                            <Text style={styles.modalText}>Logradouro: </Text>
+                            <Text style={styles.modalText}>Número: </Text>
+                            <Text style={styles.modalText}>Complemento: </Text>
+                            <Text style={styles.modalText}>Bairro: </Text>
+                            <Text style={styles.modalText}>Cidade: </Text>
+                            <Text style={styles.modalText}>Estado: </Text>
+                            <Text style={styles.modalText}>Descrição do Serviço: </Text>
+                          </View>
+                          <TouchableOpacity
+                            style={[styles.button, styles.buttonClose]}
+                            onPress={() => setModalInfoVisible(!modalInfoVisible)}
+                          >
+                            <Text style={styles.textStyle}>Fechar</Text>
+                          </TouchableOpacity>
+                        </View>
+        </View>
+    </Modal>
+    ); // Render things inside the data
+}
+
      const styles = StyleSheet.create({
        container:{
          flex:1,
@@ -216,13 +237,15 @@ export default function DisplayFirebaseScreen (){
       button: {
         borderRadius: 20,
         padding: 10,
-        elevation: 2
+        elevation: 2,
+        width:130
       },
       buttonOpen: {
         backgroundColor: "#F194FF",
       },
       buttonClose: {
-        backgroundColor: "#2196F3",
+        backgroundColor: "#323ca8",
+        width: 130
       },
       textStyle: {
         color: "white",
