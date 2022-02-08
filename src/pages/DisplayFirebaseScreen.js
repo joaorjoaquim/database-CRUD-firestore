@@ -1,17 +1,15 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { View, ScrollView, Text, StyleSheet, Dimensions, ImageBackground, TextInput, TouchableOpacity, Image, FlatList } from 'react-native';
-import Carousel from 'react-native-snap-carousel'; //tem que instalar o repositorio snap carousel no servidor
-import OutlineInput from 'react-native-outline-input';
-import Icon from 'react-native-vector-icons/MaterialIcons'; 
-const {width: screenWidth, height: screenHeight} = Dimensions.get('window'); //pega dimensoes na tela e joga para uma variavel
-import { Entypo, Feather} from '@expo/vector-icons';
-import RNPickerSelect from 'react-native-picker-select';
-import { Select } from 'native-base';
+import React, {useEffect, useState} from 'react';
+import {FlatList, Text, TouchableOpacity, View} from 'react-native';
+import {AntDesign, Entypo} from '@expo/vector-icons';
 import database from '../services/firebaseConfig'
-
+import CustomModal from "../components/CustomModal";
 
 export default function DisplayFirebaseScreen (){
   const [task, setTask] = useState([]);
+  const [detailsInfo, setDetailsInfo] = useState([]);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalButtonText, setModalButtonText] = useState("");
+  const [modalInfoVisible, setModalInfoVisible] = useState(false);
 
   useEffect( () => {
       database.collection("Tasks").get()
@@ -25,26 +23,33 @@ export default function DisplayFirebaseScreen (){
           })
   }, []);
 
+  const updateModalInfo = (title, buttonText, details = []) => {
+      setDetailsInfo(details)
+      setModalTitle(title);
+      setModalButtonText(buttonText);
+      setModalInfoVisible(true);
+  };
+
   return (
       <View>
+          <CustomModal title={modalTitle} buttonText={modalButtonText} visibility={modalInfoVisible} setVisible={setModalInfoVisible} detailsInfo={detailsInfo}/>
           <FlatList
               data={task}
               keyExtractor={(item, key) => `${key}`}
               renderItem={({item}) => (
                   <View style={{flexDirection:'row', height:80, borderBottomColor:'#323ca8', borderBottomWidth:2 ,marginVertical: 5, marginBottom: 5}}>
-                    <View style={{width:'20%', flexDirection:'column', padding: 5, justifyContent:'center', alignItems:'center'}}>
-                      <TouchableOpacity>
-                        <Text>Detalhes</Text>
+                    <View style={{width:'20%', flexDirection:'column', padding: 5, justifyContent:'space-between', alignItems:'center'}}>
+                      <TouchableOpacity onPress={() => updateModalInfo("Detalhes", "Ok", item)}>
+                      <Entypo name="text-document" size={18} color="#323ca8"/>
                       </TouchableOpacity>
-                      
-                      <TouchableOpacity>
-                        <Text>Editar</Text>
+
+                      <TouchableOpacity onPress={() => updateModalInfo("Editar informações", "Salvar")}>
+                      <Entypo name="edit" size={18} color="#323ca8"/>
                       </TouchableOpacity>
-                      
-                      <TouchableOpacity>
-                        <Text>Excluir</Text>
+
+                      <TouchableOpacity onPress={() => updateModalInfo("Você quer deletar?", "Sim")}>
+                      <AntDesign name="delete" size={18} color="#cc1d25"/>
                       </TouchableOpacity>
-                      
                     </View>
 
                     <View style={{width: '80%', flexDirection:'column', marginVertical: 1, marginBottom:10, alignItems:'flex-start', justifyContent:'center', borderLeftWidth:1, paddingLeft: 10}}>
@@ -52,70 +57,11 @@ export default function DisplayFirebaseScreen (){
                     <Text>Codigo: {item.codigo}</Text>
                     <Text>Data: {item.date}</Text>
                     <Text>Cidade: {item.cidade}</Text>
-                    </View>  
+                    </View>
                   </View>
-                  
+
               )}
           />
       </View>
   );
 }
-     
-     const styles = StyleSheet.create({
-       container:{
-         flex:1,
-       },
-       input:{
-         width: '90%',
-         flexDirection:'row',
-         padding: 13,
-         paddingLeft: 20,
-         fontSize: 17,
-         borderWidth: 2,
-         marginHorizontal: 20,
-         marginTop: 10,
-         borderRadius: 10,
-       },
-       inputLocation:{
-        width: '90%',
-        flexDirection:'row',
-        padding: 13,
-        paddingLeft: 20,
-        fontSize: 17,
-        borderBottomWidth: 2,
-        marginHorizontal: 20,
-        marginTop: 10,
-        borderRadius: 10,
-      },
-       inputSelect:{
-        width: '90%',
-        fontSize: 17,
-        borderWidth: 2,
-        marginHorizontal: 20,
-        marginBottom:5,
-        marginTop: 10,
-        borderRadius: 10,
-       },
-       btnRegister:{
-        backgroundColor: '#949a8e',
-        width: '90%',
-        height: 45,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 7,
-        marginHorizontal: 20,
-        marginTop: 10,
-        marginBottom: 5
-       },
-       btnPicture:{
-        backgroundColor: '#3877ff',
-        width: '90%',
-        height: 45,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 7,
-        marginHorizontal: 20,
-        marginTop: 10,
-        marginBottom: 5
-       },    
-     });
