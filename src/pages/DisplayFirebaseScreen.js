@@ -29,12 +29,12 @@ export default function DisplayFirebaseScreen (){
           })
   }, []);
 
-  const handleOnSelectItem = (vis, item) => {
+  const handleOnSelectItem = (item) => {
     setSelectedItem(item);
-    setModalInfoVisible(vis);
+    setModalInfoVisible(true);
   };
   const handleOnCloseModal = () => {
-    setSelectedItem(null);
+    setSelectedItem(false);
   };
 
   return (
@@ -58,7 +58,7 @@ export default function DisplayFirebaseScreen (){
                   >
                       <View style={styles.centeredView}>
                         <View style={styles.modalView}>
-                          <Text style={styles.modalText}>Editar Informações</Text>
+                          <Text style={styles.modalText}>Editar Informações </Text>
                           <TouchableOpacity
                             style={[styles.button, styles.buttonClose]}
                             onPress={() => setModalEditVisible(!modalEditVisible)}
@@ -94,7 +94,7 @@ export default function DisplayFirebaseScreen (){
                   </Modal> 
 
                     <View style={{width:'20%', flexDirection:'column', padding: 5, justifyContent:'space-between', alignItems:'center'}}>
-                      <TouchableOpacity onPress={() => handleOnSelectItem( true, item)}>
+                      <TouchableOpacity onPress={() => handleOnSelectItem(item)}>
                       <Entypo name="text-document" size={18} color="#323ca8"/>
                       </TouchableOpacity>
                       
@@ -119,20 +119,21 @@ export default function DisplayFirebaseScreen (){
               )}
           />
           {/* Modal do Detalhes*/}
-          <CustomModal isVisible={selectedItem} selectedItem={selectedItem} onClose={handleOnCloseModal} />
+          <CustomModal isVisible={modalInfoVisible} selectedItem={selectedItem} onClose={handleOnCloseModal} />
       </View>
   );
 }
   
 export function CustomModal(props) {
   const { isVisible, item, onClose,  /*...*/ } = props;
-
+  const [modalInfoVisible, setModalInfoVisible] = useState(props.isVisible);
+  
   return (
-    <Modal visible={isVisible} onRequestClose={onClose} animationType="fade" transparent={true}>
+    <Modal visible={modalInfoVisible} onRequestClose={onClose} animationType="fade" transparent={true}>
       <View style={styles.centeredView}>
                         <View style={styles.modalView}>
                           <View style={{alignItems:'flex-start'}}>
-                            <Text style={styles.modalText}>Prestador de Serviço:</Text>
+                            <Text style={styles.modalText}>Prestador de Serviço: {item}</Text>
                             <Text style={styles.modalText}>Código do Serviço: </Text>
                             <Text style={styles.modalText}>Data: </Text>
                             <Text style={styles.modalText}>CEP: </Text>
