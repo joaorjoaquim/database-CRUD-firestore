@@ -1,7 +1,15 @@
-import {Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import React from "react";
+import {Modal, StyleSheet, Text, TouchableOpacity, View, TextInput, Alert} from "react-native";
+import React, {useState} from "react";
 
 const CustomModal = ({option, title, buttonText, visibility, setVisible, detailsInfo = null}) => {
+
+    const [details, setDetails] = useState(detailsInfo);
+
+    const editDetails = (key, value) => {
+        const tmpDetails = details
+        tmpDetails[key] = value
+        setDetails(tmpDetails)
+    }
     
     const ShowDetailsInfo = () => {
         var dicionario = {
@@ -41,7 +49,20 @@ const CustomModal = ({option, title, buttonText, visibility, setVisible, details
         var listText = [];
         Object.entries(dicionario).forEach(([key, value])=>{
             listText.push(
-                <Text key={key} style={styles.modalText}>{`${value}: ${detailsInfo[key]}`}</Text>
+                <View key={`view.${key}`} style={{flexDirection:'row', alignItems:'center'}}>
+                    <Text key={`text.${key}`} style={styles.modalText}>{`${value}: `}</Text>
+                    <View key={`views.${key}`} style={{borderBottomWidth: 2, borderBottomColor: '#323ca8', flex: 1}}>   
+                        <TextInput
+                            key={key}
+                            style={{paddingLeft:15}}
+                            placeholder={value}
+                            secureTextEntry={false}
+                            autoCorrect={false}
+                            onChangeText={(val) => editDetails(key, val)}
+                            value={details[key]}
+                        />
+                    </View> 
+                </View>
             )
         })
         return listText
@@ -53,7 +74,7 @@ const CustomModal = ({option, title, buttonText, visibility, setVisible, details
             transparent={true}
             visible={visibility}
             onRequestClose={() => {
-                Alert.alert("Modal has been closed.");
+                Alert.alert("Ok, de volta ao Display");
                 setVisible(!visibility);
             }}
         >
@@ -62,7 +83,7 @@ const CustomModal = ({option, title, buttonText, visibility, setVisible, details
                     <Text style={styles.modalTitle}>{title}</Text>
                     {detailsInfo && (
                         <View style={styles.modalText}>
-                            <ShowDetailsInfo/>
+                            <ShowEditInfo/>
                         </View>
                     )}
                     <TouchableOpacity

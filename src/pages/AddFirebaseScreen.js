@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, ScrollView, Text, StyleSheet, Dimensions, ImageBackground, TextInput, TouchableOpacity, Image } from 'react-native';
+import { View, ScrollView, Text, StyleSheet, Dimensions, ImageBackground, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
 const {width: screenWidth, height: screenHeight} = Dimensions.get('window'); //pega dimensoes na tela e joga para uma variavel
 import { Entypo, Feather} from '@expo/vector-icons';
 import RNPickerSelect from 'react-native-picker-select';
@@ -61,6 +61,7 @@ export default function AddFirebaseScreen (){
       bairro: bairro
     })
     console.log('adicionou')
+    Alert.alert('Adicionado');
     setUser('');
     setCodigo(null);
     setDate('');
