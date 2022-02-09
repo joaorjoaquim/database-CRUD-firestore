@@ -35,7 +35,10 @@ const CustomModal = ({option, title, buttonText, visibility, setVisible, details
     }
 
     const ShowEditInfo = () => {
+        console.log(details)
+        console.log(detailsInfo)
 
+        console.log(details)
         var listText = [];
         Object.entries(dicionario).forEach(([key, value])=>{
             listText.push(

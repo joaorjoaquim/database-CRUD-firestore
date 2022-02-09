@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, ScrollView, Text, StyleSheet, Dimensions, ImageBackground, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
 const {width: screenWidth, height: screenHeight} = Dimensions.get('window'); //pega dimensoes na tela e joga para uma variavel
-import { Entypo, Feather} from '@expo/vector-icons';
+import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import RNPickerSelect from 'react-native-picker-select';
 import { Select } from 'native-base';
 import Axios from 'axios';
@@ -78,7 +78,7 @@ export default function AddFirebaseScreen (){
     return (
         <ScrollView style={styles.container}>  
           <View style={styles.input}>         
-            <Entypo name="user" size={25} color="#323ca8" />
+            <Entypo name="v-card" size={25} color="#323ca8" />
             <TextInput
               style={{paddingLeft:15}}
               placeholder="Nome completo do prestador de serviço"
@@ -90,7 +90,7 @@ export default function AddFirebaseScreen (){
             />
           </View>
           <View style={styles.input}>         
-            <Entypo name="mail" size={25} color="#323ca8"/>
+            <Entypo name="key" size={25} color="#323ca8"/>
             <TextInput
               style={{paddingLeft:15}}
               placeholder="Código do serviço"
@@ -207,7 +207,7 @@ export default function AddFirebaseScreen (){
 
 
           <View style={styles.input}>         
-            <Entypo name="v-card" size={25} color="#323ca8"/>
+            <MaterialIcons  name="description" size={25} color="#323ca8"/>
             <TextInput
               style={{paddingLeft:15}}
               placeholder="Descrição do Serviço"
