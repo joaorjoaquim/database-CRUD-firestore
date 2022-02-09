@@ -7,6 +7,7 @@ import CustomModal from "../components/CustomModal";
 export default function DisplayFirebaseScreen (){
   const [task, setTask] = useState([]);
   const [detailsInfo, setDetailsInfo] = useState([]);
+  const [modalOption, setModalOption] = useState(0);
   const [modalTitle, setModalTitle] = useState("");
   const [modalButtonText, setModalButtonText] = useState("");
   const [modalInfoVisible, setModalInfoVisible] = useState(false);
@@ -23,8 +24,9 @@ export default function DisplayFirebaseScreen (){
           })
   }, []);
 
-  const updateModalInfo = (title, buttonText, details = []) => {
-      setDetailsInfo(details)
+  const updateModalInfo = (option, title, buttonText, details = []) => {
+      setDetailsInfo(details);
+      setModalOption(option);
       setModalTitle(title);
       setModalButtonText(buttonText);
       setModalInfoVisible(true);
@@ -32,22 +34,22 @@ export default function DisplayFirebaseScreen (){
 
   return (
       <View>
-          <CustomModal title={modalTitle} buttonText={modalButtonText} visibility={modalInfoVisible} setVisible={setModalInfoVisible} detailsInfo={detailsInfo}/>
+          <CustomModal option={modalOption} title={modalTitle} buttonText={modalButtonText} visibility={modalInfoVisible} setVisible={setModalInfoVisible} detailsInfo={detailsInfo}/>
           <FlatList
               data={task}
               keyExtractor={(item, key) => `${key}`}
               renderItem={({item}) => (
                   <View style={{flexDirection:'row', height:80, borderBottomColor:'#323ca8', borderBottomWidth:2 ,marginVertical: 5, marginBottom: 5}}>
                     <View style={{width:'20%', flexDirection:'column', padding: 5, justifyContent:'space-between', alignItems:'center'}}>
-                      <TouchableOpacity onPress={() => updateModalInfo("Detalhes", "Ok", item)}>
+                      <TouchableOpacity onPress={() => updateModalInfo(1, "Detalhes", "Ok", item)}>
                       <Entypo name="text-document" size={18} color="#323ca8"/>
                       </TouchableOpacity>
 
-                      <TouchableOpacity onPress={() => updateModalInfo("Editar informações", "Salvar")}>
+                      <TouchableOpacity onPress={() => updateModalInfo(2, "Editar informações", "Salvar")}>
                       <Entypo name="edit" size={18} color="#323ca8"/>
                       </TouchableOpacity>
 
-                      <TouchableOpacity onPress={() => updateModalInfo("Você quer deletar?", "Sim")}>
+                      <TouchableOpacity onPress={() => updateModalInfo(3, "Você quer deletar?", "Sim")}>
                       <AntDesign name="delete" size={18} color="#cc1d25"/>
                       </TouchableOpacity>
                     </View>

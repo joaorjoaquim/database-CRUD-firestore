@@ -1,11 +1,48 @@
 import {Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import React from "react";
 
-const CustomModal = ({title, buttonText, visibility, setVisible, detailsInfo = null}) => {
+const CustomModal = ({option, title, buttonText, visibility, setVisible, detailsInfo = null}) => {
+    
     const ShowDetailsInfo = () => {
+        var dicionario = {
+            "username": "Prestador de Serviço",
+            "codigo": "Código do Serviço",
+            "date": "Data", 
+            "cep": "CEP", 
+            "logradouro": "Logradouro",
+            "numero": "Número",
+            "complemento": "Complemento",
+            "bairro": "Bairro",
+            "cidade": "Cidade",
+            "estado": "Estado",
+            "descricao": "Descrição do Serviço"
+        };
         var listText = [];
-        Object.entries(detailsInfo).forEach(([key, value])=>{
-            listText.push(<Text key={key} style={styles.modalText}>{`${key.charAt(0).toUpperCase() + key.slice(1)}: ${value}`}</Text>)
+        Object.entries(dicionario).forEach(([key, value])=>{
+            listText.push(<Text key={key} style={styles.modalText}>{`${value}: ${detailsInfo[key]}`}</Text>)
+        })
+        return listText
+    }
+
+    const ShowEditInfo = () => {
+        var dicionario = {
+            "username": "Prestador de Serviço",
+            "codigo": "Código do Serviço",
+            "date": "Data", 
+            "cep": "CEP", 
+            "logradouro": "Logradouro",
+            "numero": "Número",
+            "complemento": "Complemento",
+            "bairro": "Bairro",
+            "cidade": "Cidade",
+            "estado": "Estado",
+            "descricao": "Descrição do Serviço"
+        };
+        var listText = [];
+        Object.entries(dicionario).forEach(([key, value])=>{
+            listText.push(
+                <Text key={key} style={styles.modalText}>{`${value}: ${detailsInfo[key]}`}</Text>
+            )
         })
         return listText
     }
@@ -22,9 +59,9 @@ const CustomModal = ({title, buttonText, visibility, setVisible, detailsInfo = n
         >
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                    <Text style={styles.modalText}>{title}</Text>
+                    <Text style={styles.modalTitle}>{title}</Text>
                     {detailsInfo && (
-                        <View style={{alignItems:'flex-start'}}>
+                        <View style={styles.modalText}>
                             <ShowDetailsInfo/>
                         </View>
                     )}
@@ -48,8 +85,17 @@ const styles = StyleSheet.create({
         marginTop: 22
     },
     modalText: {
-        marginBottom: 15,
-        textAlign: "center"
+        marginBottom: 2,
+        textAlign: "center",
+        fontSize: 15,
+        fontWeight:'normal',
+        alignItems:'flex-start'
+    },
+    modalTitle: {
+        marginBottom: 10,
+        textAlign: "center",
+        fontSize: 18,
+        fontWeight:'bold'
     },
     modalView: {
         margin: 20,
@@ -70,11 +116,13 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 10,
         elevation: 2,
-        width:130
+        width:130,
+        marginTop:10
     },
     buttonClose: {
         backgroundColor: "#323ca8",
-        width: 130
+        width: 130,
+        marginTop:10
     },
     textStyle: {
         color: "white",
