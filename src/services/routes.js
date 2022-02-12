@@ -3,10 +3,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Entypo, Feather} from '@expo/vector-icons';
-import HomeScreen from '../pages/HomeScreen';
-import RouteScreen from '../pages/RouteScreen';
-import SettingScreen from '../pages/SettingScreen';
-import ProfileScreen from '../pages/ProfileScreen';
+import AddFirebaseScreen from '../pages/AddFirebaseScreen';
+import DisplayFirebaseScreen from '../pages/DisplayFirebaseScreen';
 import LoginScreen from '../pages/LoginScreen';
 import Preload from './preload'
 import { TouchableOpacity, Image, View, Text } from 'react-native';
@@ -21,7 +19,7 @@ const BottomRoutes = ({navigation}) => {
     function LogoTitle() {
         return (
           <Image
-            style={{ width: 35, height: 30 }}
+            style={{ width: 30, height: 25 }}
             source={require('../assets/techlogo.png')}
           />
         );
@@ -45,10 +43,11 @@ const BottomRoutes = ({navigation}) => {
         navigation.setOptions({
             headerShown: true,
             borderTopColor: 'transparent',
-            tabBarInactiveTintColor: '#121212',
+            tabBarInactiveTintColor: '#c1c7d9',
             headerStyle: {
                 height: 60,
-                backgroundColor: '#121212'
+                backgroundColor: '#c1c7d9',
+                
             },
             headerTitle: (props) => <LogoTitle {...props} />,
             headerRight: () => (
@@ -64,63 +63,43 @@ const BottomRoutes = ({navigation}) => {
     }, []);
     
     return(
-    <Tab.Navigator
+        <Tab.Navigator
         screenOptions={{
             headerShown: false,
             borderTopColor: 'transparent',
-            tabBarActiveTintColor: '#c9e0f2',
-            tabBarInactiveTintColor: '#FFF',
+            tabBarActiveTintColor: '#06184f',
+            tabBarInactiveTintColor: '#1537a1',
             tabBarStyle: {
                 paddingBottom: 5, 
                 paddingTop: 5,
-                backgroundColor: '#121212'
+                backgroundColor: '#c1c7d9'
             },         
         }}
         
     >
         <Tab.Screen 
-        name="HomeTab" 
-        component={HomeScreen} 
+        name="AddFirebase" 
+        component={AddFirebaseScreen} 
         options={{
             tabBarIcon: ({size, color}) => (
-                <Entypo name="database" size={size} color={color} />
+                <Entypo name="squared-plus" size={size} color={color} />
             ),
-            title: 'Firebase'
+            title: 'Insert'
         }}
         />
         
         <Tab.Screen 
-        name="Route" 
-        component={RouteScreen} 
+        name="DisplayFirebase" 
+        component={DisplayFirebaseScreen} 
         options={{
             tabBarIcon: ({size, color}) => (
-                <Entypo name="rocket" size={size} color={color} />
-            )
+                <Entypo name="list" size={size} color={color} />
+            ),
+            title:'Display'
         }}
         />
         
-        <Tab.Screen 
-        name="Setting" 
-        component={SettingScreen} 
-        options={{
-            tabBarIcon: ({size, color}) => (
-                <Entypo name="star" size={size} color={color} />
-            )
-        }}
-        />
-        
-        <Tab.Screen 
-        name="Profile" 
-        component={ProfileScreen} 
-        options={{
-            tabBarIcon: ({size, color}) => (
-                <Entypo name="time-slot" size={size} color={color} />
-            )
-        }}
-        />
     </Tab.Navigator>
-    
-
     )
 }
 
