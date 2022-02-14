@@ -3,9 +3,11 @@ import { View, ScrollView, Text, StyleSheet, Dimensions, ImageBackground, TextIn
 const {width: screenWidth, height: screenHeight} = Dimensions.get('window'); //pega dimensoes na tela e joga para uma variavel
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import RNPickerSelect from 'react-native-picker-select';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { Select } from 'native-base';
 import Axios from 'axios';
 import database from '../services/firebaseConfig'
+import { format } from "date-fns";
 
 export default function AddFirebaseScreen (){
   
@@ -13,13 +15,12 @@ export default function AddFirebaseScreen (){
       
   }, []);
 
-
-  let [language, setLanguage] = React.useState("");
-  const carouselRef = useRef(null);
+  const [datetest, setDatetest] = useState(new Date(1598051730000));
+  const [show, setShow] = useState(false);
 
   const [user, setUser] = useState('');
   const [codigo, setCodigo] = useState(null);
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState(null);
   const [cep, setCep] = useState(null);
   const [logradouro, setLogradouro] = useState('');
   const [numero, setNumero] = useState(null);
@@ -28,6 +29,15 @@ export default function AddFirebaseScreen (){
   const [cidade, setCidade] = useState('');
   const [estado, setEstado] = useState('');
   const [descricao, setDescricao] = useState('');
+
+  const showMode = () => {
+    setShow(!show);
+  };
+  const onChange = (event, selectedDate) => {
+    showMode();
+    let aux = format(selectedDate,'dd/MM/yyyy')
+    setDate(aux);
+  };
 
   buscarCep = () => {
     console.log(cep)
@@ -103,8 +113,13 @@ export default function AddFirebaseScreen (){
             />
           </View>
 
-          <View style={styles.input}>         
-            <Entypo name="calendar" size={25} color="#323ca8"/>
+          <View style={styles.input}>
+            <TouchableOpacity onPress={showMode}>      
+              <Entypo name="calendar" size={25} color="#323ca8"/>
+            </TouchableOpacity>  
+            {show && (
+              <DateTimePicker mode="date" value={datetest} onChange={onChange}/>
+              )}
             <TextInput
               style={{paddingLeft:15}}
               placeholder="Data de Agendamento"
