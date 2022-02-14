@@ -6,6 +6,18 @@ const CustomModal = ({option, title, buttonText, visibility, setVisible, details
 
     const [details, setDetails] = useState(detailsInfo);
 
+    const [userEdit, setUserEdit] = useState('');
+    const [codigoEdit, setCodigoEdit] = useState(null);
+    const [dateEdit, setDateEdit] = useState(null);
+    const [cepEdit, setCepEdit] = useState(null);
+    const [logradouroEdit, setLogradouroEdit] = useState('');
+    const [numeroEdit, setNumeroEdit] = useState(null);
+    const [complementoEdit, setComplementoEdit] = useState('');
+    const [bairroEdit, setBairroEdit] = useState('');
+    const [cidadeEdit, setCidadeEdit] = useState('');
+    const [estadoEdit, setEstadoEdit] = useState('');
+    const [descricaoEdit, setDescricaoEdit] = useState('');
+
     const editDetails = (key, value) => {
         const tmpDetails = details
         tmpDetails[key] = value
@@ -29,6 +41,22 @@ const CustomModal = ({option, title, buttonText, visibility, setVisible, details
     function deleteTask(id) {
         database.collection("Tasks").doc(id).delete(); //testar comando ainda
       }
+
+    function editTask(id){
+        database.collection("Tasks").doc(id).update({
+            username: userEdit,
+            numero: numeroEdit,
+            logradouro: logradouroEdit,
+            estado: estadoEdit,
+            descricao: descricaoEdit,
+            date: dateEdit,
+            complemento: complementoEdit,
+            codigo: codigoEdit,
+            cidade: cidadeEdit,
+            cep: cepEdit,
+            bairro: bairroEdit
+        })
+    }
 
     const ShowDetailsInfo = () => {
         
