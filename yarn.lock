@@ -11395,6 +11395,11 @@ react-native-maps@0.30.1:
   dependencies:
     "@types/geojson" "^7946.0.7"
 
+react-native-mask-input@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-mask-input/-/react-native-mask-input-1.1.1.tgz#a75c39e53885eb7f9d8f09da19afab5184c494ad"
+  integrity sha512-euvDIj5XX13IxPzujYtrrwG5qZOnsQDd2N71FwQ2Q7nkw9YkpsP/MObCZePgQlXGBLnhRphvUQE+0amAClQC4Q==
+
 react-native-outline-input@^1.0.8:
   version "1.0.8"
   resolved "https://registry.yarnpkg.com/react-native-outline-input/-/react-native-outline-input-1.0.8.tgz#9831544c5e4c6217d2910577a33d5e38fb18aaae"

@@ -1,9 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { View, ScrollView, Text, StyleSheet, Dimensions, ImageBackground, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, ScrollView, Text, StyleSheet, Dimensions, TextInput, TouchableOpacity, Alert } from 'react-native';
 const {width: screenWidth, height: screenHeight} = Dimensions.get('window'); //pega dimensoes na tela e joga para uma variavel
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import RNPickerSelect from 'react-native-picker-select';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import MaskInput from 'react-native-mask-input';
 import { Select } from 'native-base';
 import Axios from 'axios';
 import database from '../services/firebaseConfig'
@@ -15,7 +16,7 @@ export default function AddFirebaseScreen (){
       
   }, []);
 
-  const [datetest, setDatetest] = useState(new Date(1598051730000));
+  const [datetest, setDatetest] = useState(new Date());
   const [show, setShow] = useState(false);
 
   const [user, setUser] = useState('');
@@ -136,16 +137,19 @@ export default function AddFirebaseScreen (){
         <Entypo name="location" size={20} color='#FFF'/>
         <Text style={{padding: 3, paddingLeft:10, backgroundColor:'#323ca8', color:'#fff', fontSize:18}}>Endereço do Serviço</Text>
         </View>
-          <View style={styles.inputLocation}>         
-            <TextInput
+          <View style={styles.inputLocation}>
+            <MaskInput
               style={{paddingLeft:1}}
-              placeholder="CEP"
-              onChangeText={(value) => setCep(value)}
-              onBlur={buscarCep}
               value={cep}
+              placeholder="CEP"
+              onBlur={buscarCep}
               secureTextEntry={false}
               autoCorrect={false}
               keyboardType="numeric"
+              onChangeText={(masked, unmasked) => {
+                setCep(masked);
+              }}
+              mask={[/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/]}
             />
           </View>
           <View style={styles.inputLocation}>         
