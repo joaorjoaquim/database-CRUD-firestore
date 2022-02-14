@@ -1,5 +1,6 @@
 import {Modal, StyleSheet, Text, TouchableOpacity, View, TextInput, Alert, ScrollView} from "react-native";
 import React, {useState} from "react";
+import database from '../../services/firebaseConfig';
 
 const CustomModal = ({option, title, buttonText, visibility, setVisible, detailsInfo = null}) => {
 
@@ -24,6 +25,10 @@ const CustomModal = ({option, title, buttonText, visibility, setVisible, details
         "estado": "Estado",
         "descricao": "Descrição do Serviço"
     };
+
+    function deleteTask(id) {
+        database.collection("Tasks").doc(id).delete(); //testar comando ainda
+      }
 
     const ShowDetailsInfo = () => {
         

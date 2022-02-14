@@ -18,7 +18,7 @@ export default function DisplayFirebaseScreen (){
               let list = []
               querySnapshot.forEach(onSnapshot => {
                   let data = onSnapshot.data();
-                  list.push(data)
+                  list.push({...data, id: onSnapshot.id}) //dados + document id
               })
               setTask(list);
           })
