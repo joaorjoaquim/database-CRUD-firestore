@@ -13,7 +13,7 @@ export default function DisplayFirebaseScreen (){
   const [modalInfoVisible, setModalInfoVisible] = useState(false);
 
   useEffect( () => {
-      database.collection("Tasks").get()
+      database.db.collection("Tasks").get()
           .then((querySnapshot) =>{
               let list = []
               querySnapshot.forEach(onSnapshot => {

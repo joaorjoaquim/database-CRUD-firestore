@@ -20,7 +20,7 @@ const CustomModal = ({option, title, buttonText, visibility, setVisible, details
 
     useEffect( () => {
         setDetails(detailsInfo)
-    }, [detailsInfo]);
+    }, []);
 
     const editDetails = (key, value) => {
         const tmpDetails = details
@@ -44,12 +44,12 @@ const CustomModal = ({option, title, buttonText, visibility, setVisible, details
 
     function deleteTask(id) {
         console.log(id)
-        database.collection("Tasks").doc(id).delete(); //testar comando aindarr
+        database.db.collection("Tasks").doc(id).delete(); //testar comando aindarr
         setVisible(!visibility)
       }
 
     function editTask(id){
-        database.collection("Tasks").doc(id).update({
+        database.db.collection("Tasks").doc(id).update({
             username: userEdit,
             numero: numeroEdit,
             logradouro: logradouroEdit,

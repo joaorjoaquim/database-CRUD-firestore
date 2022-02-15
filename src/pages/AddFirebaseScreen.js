@@ -58,7 +58,7 @@ export default function AddFirebaseScreen (){
   }
 
   function addTask(){
-    database.collection('Tasks').add({
+    database.db.collection('Tasks').add({
       username: user,
       numero: numero,
       logradouro: logradouro,
