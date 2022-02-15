@@ -45,11 +45,11 @@ export default function DisplayFirebaseScreen (){
                       <Entypo name="text-document" size={18} color="#323ca8"/>
                       </TouchableOpacity>
 
-                      <TouchableOpacity onPress={() => updateModalInfo(2, "Editar informações", "Salvar")}>
+                      <TouchableOpacity onPress={() => updateModalInfo(2, "Editar informações", "Salvar", item)}>
                       <Entypo name="edit" size={18} color="#323ca8"/>
                       </TouchableOpacity>
 
-                      <TouchableOpacity onPress={() => updateModalInfo(3, "Você quer deletar?", "Sim")}>
+                      <TouchableOpacity onPress={() => updateModalInfo(3, "Você quer deletar?", "Sim", item)}>
                       <AntDesign name="delete" size={18} color="#cc1d25"/>
                       </TouchableOpacity>
                     </View>

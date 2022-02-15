@@ -1,5 +1,5 @@
 import {Modal, StyleSheet, Text, TouchableOpacity, View, TextInput, Alert, ScrollView} from "react-native";
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import database from '../../services/firebaseConfig';
 
 const CustomModal = ({option, title, buttonText, visibility, setVisible, detailsInfo = null}) => {
@@ -17,6 +17,10 @@ const CustomModal = ({option, title, buttonText, visibility, setVisible, details
     const [cidadeEdit, setCidadeEdit] = useState('');
     const [estadoEdit, setEstadoEdit] = useState('');
     const [descricaoEdit, setDescricaoEdit] = useState('');
+
+    useEffect( () => {
+        setDetails(detailsInfo)
+    }, [detailsInfo]);
 
     const editDetails = (key, value) => {
         const tmpDetails = details
@@ -39,7 +43,9 @@ const CustomModal = ({option, title, buttonText, visibility, setVisible, details
     };
 
     function deleteTask(id) {
-        database.collection("Tasks").doc(id).delete(); //testar comando ainda
+        console.log(id)
+        database.collection("Tasks").doc(id).delete(); //testar comando aindarr
+        setVisible(!visibility)
       }
 
     function editTask(id){
@@ -69,9 +75,7 @@ const CustomModal = ({option, title, buttonText, visibility, setVisible, details
 
     const ShowEditInfo = () => {
         console.log(details)
-        console.log(detailsInfo)
 
-        console.log(details)
         var listText = [];
         Object.entries(dicionario).forEach(([key, value])=>{
             listText.push(
@@ -79,7 +83,7 @@ const CustomModal = ({option, title, buttonText, visibility, setVisible, details
                     <Text style={styles.modalText}>{`${value}: `}</Text>
                     <View style={{borderBottomWidth: 2, borderBottomColor: '#323ca8', flex: 1}}>   
                         <TextInput
-                            style={{paddingLeft:15}}
+                            style={{paddingLeft:5}}
                             placeholder={value}
                             secureTextEntry={false}
                             autoCorrect={false}
@@ -108,17 +112,50 @@ const CustomModal = ({option, title, buttonText, visibility, setVisible, details
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
                         <Text style={styles.modalTitle}>{title}</Text>
-                        {detailsInfo && (
+
+                        {option == 1 && detailsInfo && (
+                            <View style={styles.modalText}>
+                                <ShowDetailsInfo/>
+                                <TouchableOpacity
+                                    style={[styles.button, styles.buttonClose]}
+                                    onPress={() => setVisible(!visibility)}
+                                >
+                                    <Text style={styles.textStyle}>{buttonText}</Text>
+                                </TouchableOpacity>
+                            </View>
+                            
+                        )}
+                        {option == 2 && detailsInfo && (
                             <View style={styles.modalText}>
                                 <ShowEditInfo/>
+                                <TouchableOpacity
+                                    style={[styles.button, styles.buttonClose]}
+                                    onPress={() => setVisible(!visibility)}
+                                >
+                                    <Text style={styles.textStyle}>{buttonText}</Text>
+                                </TouchableOpacity>
                             </View>
                         )}
-                        <TouchableOpacity
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={() => setVisible(!visibility)}
-                        >
-                            <Text style={styles.textStyle}>{buttonText}</Text>
-                        </TouchableOpacity>
+                        {option == 3 && detailsInfo && (
+                            <View style={styles.modalText}>
+                                <ShowDetailsInfo/>
+                                <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+                                    <TouchableOpacity
+                                        style={[styles.button, styles.buttonClose]}
+                                        onPress={() => setVisible(!visibility)}
+                                    >
+                                        <Text style={styles.textStyle}>Não</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={[styles.button, styles.buttonClose]}
+                                        onPress={() => deleteTask(details.id)}
+                                    >
+                                        <Text style={styles.textStyle}>{buttonText}</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        )}
+                        
                     </View>
                 </View>
             </ScrollView>
@@ -167,12 +204,16 @@ const styles = StyleSheet.create({
         padding: 10,
         elevation: 2,
         width:130,
-        marginTop:10
+        marginTop:10,
+        justifyContent:'center',
+        alignSelf:'center'
     },
     buttonClose: {
         backgroundColor: "#323ca8",
         width: 130,
-        marginTop:10
+        marginTop:10,
+        justifyContent:'center',
+        alignSelf:'center'
     },
     textStyle: {
         color: "white",
