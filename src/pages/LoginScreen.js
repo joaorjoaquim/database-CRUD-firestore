@@ -1,6 +1,7 @@
 import React, { useState, useEffect} from "react";
 import { View, KeyboardAvoidingView, TextInput, TouchableOpacity, Text, StyleSheet, Animated, Keyboard } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import database from '../services/firebaseConfig';
 
 
 export default function LoginScreen({navigation}){
@@ -65,7 +66,10 @@ export default function LoginScreen({navigation}){
   }
 
   function handleLogin(){
-    const storeData = async (x) => {
+    database.auth.signInWithEmailAndPassword(user, password).then(userCredencials =>{
+      const user = userCredencials.user;
+      console.log('Logou com: ', user.email);
+      const storeData = async (x) => {
         try {
           await AsyncStorage.setItem('auth', `${user}:${password}`);
           navigation.replace("Home")
@@ -74,6 +78,17 @@ export default function LoginScreen({navigation}){
         }
       }
       storeData()
+    }).catch(error => alert(error.message))
+    
+    
+  }
+
+  const handleRegistration = () =>{
+    database.auth.createUserWithEmailAndPassword(user, password).then(userCredencials =>{
+      const user = userCredencials.user;
+      console.log(user.email);
+      handleLogin();
+    }).catch(error => alert(error.message))
   }
 
   return(
@@ -116,7 +131,10 @@ export default function LoginScreen({navigation}){
         >
           <Text style={styles.submitText}>Acessar</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btnRegister}>
+        <TouchableOpacity 
+        style={styles.btnRegister}
+        onPress={handleRegistration}
+        >
           <Text style={styles.registerText}>Criar Conta</Text>
         </TouchableOpacity>
       </Animated.View>
