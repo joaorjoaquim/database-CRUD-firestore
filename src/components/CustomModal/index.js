@@ -2,28 +2,35 @@ import {Modal, StyleSheet, Text, TouchableOpacity, View, TextInput, Alert, Scrol
 import React, {useState, useEffect} from "react";
 import database from '../../services/firebaseConfig';
 
-const CustomModal = ({option, title, buttonText, visibility, setVisible, detailsInfo = null}) => {
+const ShowEditInfo = ({details, editDetails, dicionario}) => {
+    var listText = [];
+    details && Object.entries(dicionario).forEach(([key, value])=>{
+        listText.push(
+            <View key={key} style={{flexDirection:'row', alignItems:'center'}}>
+                <Text style={styles.modalText}>{`${value}: `}</Text>
+                <View style={{borderBottomWidth: 2, borderBottomColor: '#323ca8', flex: 1}}>   
+                    <TextInput
+                        style={{paddingLeft:5}}
+                        onChangeText={(val) => editDetails(key, val, details)}
+                        value={details[key].toString()}
+                    />
+                </View> 
+            </View>
+        )
+    })
+    return listText
+}
 
-    const [details, setDetails] = useState(detailsInfo);
+const CustomModal = ({option, title, buttonText, visibility, setVisible, detailsInfo, editTask, deleteTask}) => {
 
-    const [userEdit, setUserEdit] = useState('');
-    const [codigoEdit, setCodigoEdit] = useState(null);
-    const [dateEdit, setDateEdit] = useState(null);
-    const [cepEdit, setCepEdit] = useState(null);
-    const [logradouroEdit, setLogradouroEdit] = useState('');
-    const [numeroEdit, setNumeroEdit] = useState(null);
-    const [complementoEdit, setComplementoEdit] = useState('');
-    const [bairroEdit, setBairroEdit] = useState('');
-    const [cidadeEdit, setCidadeEdit] = useState('');
-    const [estadoEdit, setEstadoEdit] = useState('');
-    const [descricaoEdit, setDescricaoEdit] = useState('');
+    const [details, setDetails] = useState();
 
-    useEffect( () => {
+    useEffect(()=>{
         setDetails(detailsInfo)
-    }, []);
+    },[detailsInfo])
 
-    const editDetails = (key, value) => {
-        const tmpDetails = details
+    const editDetails = (key, value, detail) => {
+        const tmpDetails = JSON.parse(JSON.stringify(detail));
         tmpDetails[key] = value
         setDetails(tmpDetails)
     }
@@ -42,57 +49,10 @@ const CustomModal = ({option, title, buttonText, visibility, setVisible, details
         "descricao": "Descrição do Serviço"
     };
 
-    function deleteTask(id) {
-        console.log(id)
-        database.db.collection("Tasks").doc(id).delete(); //testar comando aindarr
-        setVisible(!visibility)
-      }
-
-    function editTask(id){
-        database.db.collection("Tasks").doc(id).update({
-            username: userEdit,
-            numero: numeroEdit,
-            logradouro: logradouroEdit,
-            estado: estadoEdit,
-            descricao: descricaoEdit,
-            date: dateEdit,
-            complemento: complementoEdit,
-            codigo: codigoEdit,
-            cidade: cidadeEdit,
-            cep: cepEdit,
-            bairro: bairroEdit
-        })
-    }
-
     const ShowDetailsInfo = () => {
-        
         var listText = [];
         Object.entries(dicionario).forEach(([key, value])=>{
             listText.push(<Text key={key} style={styles.modalText}>{`${value}: ${detailsInfo[key]}`}</Text>)
-        })
-        return listText
-    }
-
-    const ShowEditInfo = () => {
-        console.log(details)
-
-        var listText = [];
-        Object.entries(dicionario).forEach(([key, value])=>{
-            listText.push(
-                <View key={key} style={{flexDirection:'row', alignItems:'center'}}>
-                    <Text style={styles.modalText}>{`${value}: `}</Text>
-                    <View style={{borderBottomWidth: 2, borderBottomColor: '#323ca8', flex: 1}}>   
-                        <TextInput
-                            style={{paddingLeft:5}}
-                            placeholder={value}
-                            secureTextEntry={false}
-                            autoCorrect={false}
-                            onChangeText={(val) => editDetails(key, val)}
-                            value={details[key]}
-                        />
-                    </View> 
-                </View>
-            )
         })
         return listText
     }
@@ -112,50 +72,32 @@ const CustomModal = ({option, title, buttonText, visibility, setVisible, details
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
                         <Text style={styles.modalTitle}>{title}</Text>
-
-                        {option == 1 && detailsInfo && (
+                        {detailsInfo && 
                             <View style={styles.modalText}>
-                                <ShowDetailsInfo/>
-                                <TouchableOpacity
-                                    style={[styles.button, styles.buttonClose]}
-                                    onPress={() => setVisible(!visibility)}
-                                >
-                                    <Text style={styles.textStyle}>{buttonText}</Text>
-                                </TouchableOpacity>
-                            </View>
-                            
-                        )}
-                        {option == 2 && detailsInfo && (
-                            <View style={styles.modalText}>
-                                <ShowEditInfo/>
-                                <TouchableOpacity
-                                    style={[styles.button, styles.buttonClose]}
-                                    onPress={() => setVisible(!visibility)}
-                                >
-                                    <Text style={styles.textStyle}>{buttonText}</Text>
-                                </TouchableOpacity>
-                            </View>
-                        )}
-                        {option == 3 && detailsInfo && (
-                            <View style={styles.modalText}>
-                                <ShowDetailsInfo/>
-                                <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+                                { option === 2 ? <ShowEditInfo details={details ? details : detailsInfo} editDetails={editDetails} dicionario={dicionario}/> : <ShowDetailsInfo/> }
+                                <View style={[{flexDirection:'row'}, option === 3 ? {justifyContent:'space-between'} : {alignSelf:'center'}]}>
+                                    {option === 3 && (
+                                        <TouchableOpacity
+                                            style={[styles.button, styles.buttonClose]}
+                                            onPress={() => setVisible(!visibility)}>
+                                            <Text style={styles.textStyle}>Não</Text>
+                                        </TouchableOpacity>
+                                    )}
                                     <TouchableOpacity
                                         style={[styles.button, styles.buttonClose]}
-                                        onPress={() => setVisible(!visibility)}
-                                    >
-                                        <Text style={styles.textStyle}>Não</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        style={[styles.button, styles.buttonClose]}
-                                        onPress={() => deleteTask(details.id)}
-                                    >
+                                        onPress={() => {
+                                            if(option === 2){
+                                                editTask(details)
+                                            }else if(option === 3){
+                                                deleteTask(details)
+                                            }
+                                            setVisible(!visibility)
+                                        }}>
                                         <Text style={styles.textStyle}>{buttonText}</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
-                        )}
-                        
+                        }                        
                     </View>
                 </View>
             </ScrollView>
