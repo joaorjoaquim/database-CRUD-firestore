@@ -51,7 +51,7 @@ export default function DisplayFirebaseScreen (){
           <CustomModal option={modalOption} title={modalTitle} buttonText={modalButtonText} visibility={modalInfoVisible} setVisible={setModalInfoVisible} detailsInfo={detailsInfo} editTask={editTask} deleteTask={deleteTask}/>
           <FlatList
               data={task}
-              keyExtractor={(item, key) => `${key}`}
+              keyExtractor={(item, key) => task.indexOf(item)}
               renderItem={({item}) => (
                   <View style={{flexDirection:'row', height:80, borderBottomColor:'#323ca8', borderBottomWidth:2 ,marginVertical: 5, marginBottom: 5}}>
                     <View style={{width:'20%', flexDirection:'column', padding: 5, justifyContent:'space-between', alignItems:'center'}}>
