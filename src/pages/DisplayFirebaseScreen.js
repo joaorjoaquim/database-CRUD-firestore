@@ -6,7 +6,7 @@ import CustomModal from "../components/CustomModal";
 
 export default function DisplayFirebaseScreen (){
   const [task, setTask] = useState([]);
-  const [detailsInfo, setDetailsInfo] = useState([]);
+  const [detailsInfo, setDetailsInfo] = useState();
   const [modalOption, setModalOption] = useState(0);
   const [modalTitle, setModalTitle] = useState("");
   const [modalButtonText, setModalButtonText] = useState("");
@@ -24,7 +24,7 @@ export default function DisplayFirebaseScreen (){
           })
   }, []);
 
-  const updateModalInfo = (option, title, buttonText, details = []) => {
+  const updateModalInfo = (option, title, buttonText, details = null) => {
       setDetailsInfo(details);
       setModalOption(option);
       setModalTitle(title);
@@ -32,9 +32,21 @@ export default function DisplayFirebaseScreen (){
       setModalInfoVisible(true);
   };
 
+    function deleteTask(details) {
+        database.db.collection("Tasks").doc(details.id).delete();
+        const tmpList = task.filter(ele => ele.id != details.id)
+        setTask(tmpList)
+    }
+
+    function editTask(details){
+        database.db.collection("Tasks").doc(details.id).update(details)
+        const tmpList = task.map(ele => ele.id == details.id ? details : ele)
+        setTask(tmpList)
+    }
+
   return (
       <View>
-          <CustomModal option={modalOption} title={modalTitle} buttonText={modalButtonText} visibility={modalInfoVisible} setVisible={setModalInfoVisible} detailsInfo={detailsInfo}/>
+          <CustomModal option={modalOption} title={modalTitle} buttonText={modalButtonText} visibility={modalInfoVisible} setVisible={setModalInfoVisible} detailsInfo={detailsInfo} editTask={editTask} deleteTask={deleteTask}/>
           <FlatList
               data={task}
               keyExtractor={(item, key) => `${key}`}
