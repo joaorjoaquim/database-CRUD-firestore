@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, ScrollView, Text, StyleSheet, Dimensions, TextInput, TouchableOpacity, Alert } from 'react-native';
-const {width: screenWidth, height: screenHeight} = Dimensions.get('window'); //pega dimensoes na tela e joga para uma variavel
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import RNPickerSelect from 'react-native-picker-select';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import MaskInput from 'react-native-mask-input';
-import { Select } from 'native-base';
 import Axios from 'axios';
 import database from '../services/firebaseConfig'
 import { format } from "date-fns";
+import { AuthContext } from '../services/auth';
 
 export default function AddFirebaseScreen (){
   
-    useEffect( () => {
+  const {task, setTask} = useContext(AuthContext);
+
+  useEffect( () => {
       
   }, []);
 
@@ -71,8 +72,25 @@ export default function AddFirebaseScreen (){
       cep: cep,
       bairro: bairro
     })
+    const aux = {
+      "username": user,
+      "codigo": codigo,
+      "date": date, 
+      "cep": cep, 
+      "logradouro": logradouro,
+      "numero": numero,
+      "complemento": complemento,
+      "bairro": bairro,
+      "cidade": cidade,
+      "estado": estado,
+      "descricao": descricao
+    };
+
+    setTask({taskList: aux});
+    console.log(task)
     console.log('adicionou')
     Alert.alert('Adicionado');
+
     setUser('');
     setCodigo(null);
     setDate('');
