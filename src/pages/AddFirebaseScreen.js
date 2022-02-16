@@ -1,20 +1,19 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { View, ScrollView, Text, StyleSheet, Dimensions, TextInput, TouchableOpacity, Alert } from 'react-native';
-import { Entypo, MaterialIcons } from '@expo/vector-icons';
+import React, {useContext, useEffect, useState} from 'react';
+import {Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {Entypo, MaterialIcons} from '@expo/vector-icons';
 import RNPickerSelect from 'react-native-picker-select';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import MaskInput from 'react-native-mask-input';
 import Axios from 'axios';
 import database from '../services/firebaseConfig'
-import { format } from "date-fns";
-import { AuthContext } from '../services/auth';
+import {format} from "date-fns";
+import {RootContext} from '../services/RootProvider';
 
 export default function AddFirebaseScreen (){
-  
-  const {task, setTask} = useContext(AuthContext);
+
+  const {taskList, setTaskList} = useContext(RootContext);
 
   useEffect( () => {
-      
   }, []);
 
   const [datetest, setDatetest] = useState(new Date());
@@ -37,11 +36,12 @@ export default function AddFirebaseScreen (){
   };
   const onChange = (event, selectedDate) => {
     showMode();
+    setDatetest(selectedDate)
     let aux = format(selectedDate,'dd/MM/yyyy')
     setDate(aux);
   };
 
-  buscarCep = () => {
+  const buscarCep = () => {
     console.log(cep)
     Axios.get(`https://viacep.com.br/ws/${cep}/json/`)
       .then(response => {
@@ -58,25 +58,18 @@ export default function AddFirebaseScreen (){
       })
   }
 
+  const firestoreAutoId = () => {
+    const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    return Array.from(Array(20)).map(()=>CHARS.charAt(Math.floor(Math.random()*CHARS.length))).join("")
+  }
+
   function addTask(){
-    database.db.collection('Tasks').add({
-      username: user,
-      numero: numero,
-      logradouro: logradouro,
-      estado: estado,
-      descricao: descricao,
-      date: date,
-      complemento: complemento,
-      codigo: codigo,
-      cidade: cidade,
-      cep: cep,
-      bairro: bairro
-    })
     const aux = {
+      "id": firestoreAutoId(),
       "username": user,
       "codigo": codigo,
-      "date": date, 
-      "cep": cep, 
+      "date": date,
+      "cep": cep,
       "logradouro": logradouro,
       "numero": numero,
       "complemento": complemento,
@@ -85,10 +78,9 @@ export default function AddFirebaseScreen (){
       "estado": estado,
       "descricao": descricao
     };
-
-    setTask({taskList: aux});
-    console.log(task)
-    console.log('adicionou')
+    setTaskList([...taskList, aux]);
+    const {id, ...obj} = aux
+    database.db.collection('Tasks').doc(id).set(obj)
     Alert.alert('Adicionado');
 
     setUser('');
@@ -105,8 +97,8 @@ export default function AddFirebaseScreen (){
   }
 
     return (
-        <ScrollView style={styles.container}>  
-          <View style={styles.input}>         
+        <ScrollView style={styles.container}>
+          <View style={styles.input}>
             <Entypo name="v-card" size={25} color="#323ca8" />
             <TextInput
               style={{paddingLeft:15}}
@@ -115,10 +107,10 @@ export default function AddFirebaseScreen (){
               autoCorrect={false}
               onChangeText={(value) => setUser(value)}
               value={user}
-              
+
             />
           </View>
-          <View style={styles.input}>         
+          <View style={styles.input}>
             <Entypo name="key" size={25} color="#323ca8"/>
             <TextInput
               style={{paddingLeft:15}}
@@ -133,9 +125,9 @@ export default function AddFirebaseScreen (){
           </View>
 
           <View style={styles.input}>
-            <TouchableOpacity onPress={showMode}>      
+            <TouchableOpacity onPress={showMode}>
               <Entypo name="calendar" size={25} color="#323ca8"/>
-            </TouchableOpacity>  
+            </TouchableOpacity>
             {show && (
               <DateTimePicker mode="date" value={datetest} onChange={onChange}/>
               )}
@@ -149,7 +141,7 @@ export default function AddFirebaseScreen (){
               value={date}
             />
           </View>
-         
+
         <View style={{borderWidth:2, width:'90%', flex:1, alignSelf:'center', marginVertical:10, borderRadius:7, borderColor: '#323ca8'}}>
         <View style={{flexDirection:'row', backgroundColor:'#323ca8', paddingLeft:10, alignItems:'center'}}>
         <Entypo name="location" size={20} color='#FFF'/>
@@ -164,22 +156,22 @@ export default function AddFirebaseScreen (){
               secureTextEntry={false}
               autoCorrect={false}
               keyboardType="numeric"
-              onChangeText={(masked, unmasked) => {
+              onChangeText={(masked) => {
                 setCep(masked);
               }}
               mask={[/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/]}
             />
           </View>
-          <View style={styles.inputLocation}>         
+          <View style={styles.inputLocation}>
             <TextInput
               style={{paddingLeft:1}}
               placeholder="Logradouro"
               secureTextEntry={false}
-              autoCorrect={false} 
+              autoCorrect={false}
               value={logradouro}
             />
           </View>
-          <View style={styles.inputLocation}>         
+          <View style={styles.inputLocation}>
             <TextInput
               style={{paddingLeft:1}}
               onChangeText={(value) => setNumero(value)}
@@ -190,31 +182,31 @@ export default function AddFirebaseScreen (){
               value={numero}
             />
           </View>
-          <View style={styles.inputLocation}>         
+          <View style={styles.inputLocation}>
             <TextInput
               style={{paddingLeft:1}}
               onChangeText={(value) => setComplemento(value)}
               placeholder="Complemento"
               secureTextEntry={false}
-              autoCorrect={false} 
+              autoCorrect={false}
               value={complemento}
             />
           </View>
-          <View style={styles.inputLocation}>         
+          <View style={styles.inputLocation}>
             <TextInput
               style={{paddingLeft:1}}
               placeholder="Bairro"
               secureTextEntry={false}
-              autoCorrect={false} 
+              autoCorrect={false}
               value={bairro}
             />
           </View>
-          <View style={styles.inputLocation}>         
+          <View style={styles.inputLocation}>
             <TextInput
               style={{paddingLeft:1}}
               placeholder="Cidade"
               secureTextEntry={false}
-              autoCorrect={false} 
+              autoCorrect={false}
               value={cidade}
             />
           </View>
@@ -240,10 +232,10 @@ export default function AddFirebaseScreen (){
             />
           </View>
 
-        </View>        
+        </View>
 
 
-          <View style={styles.input}>         
+          <View style={styles.input}>
             <MaterialIcons  name="description" size={25} color="#323ca8"/>
             <TextInput
               style={{paddingLeft:15}}
@@ -255,17 +247,17 @@ export default function AddFirebaseScreen (){
             />
           </View>
 
-          <TouchableOpacity 
+          <TouchableOpacity
           style={styles.btnRegister}
           onPress={() => addTask()}
           >
           <Text style={styles.registerText}>Cadastrar Serviço</Text>
-          </TouchableOpacity>        
+          </TouchableOpacity>
 
         </ScrollView>
     );
 }
-     
+
      const styles = StyleSheet.create({
        container:{
          flex:1,
@@ -329,5 +321,5 @@ export default function AddFirebaseScreen (){
        registerText:{
         color: '#FFF',
         fontSize: 17
-      }    
+      }
      });

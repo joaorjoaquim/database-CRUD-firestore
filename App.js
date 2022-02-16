@@ -1,11 +1,11 @@
 import React from "react";
 import Routes from "./src/services/routes";
-import AuthProvider from './src/services/auth'
+import RootProvider from './src/services/RootProvider'
 
 export default function App(){
   return(
-    <AuthProvider>
+    <RootProvider>
       <Routes/>
-    </AuthProvider>
+    </RootProvider>
   )
 }
