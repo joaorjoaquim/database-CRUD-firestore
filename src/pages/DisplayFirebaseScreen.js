@@ -1,11 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {AntDesign, Entypo} from '@expo/vector-icons';
 import database from '../services/firebaseConfig';
 import CustomModal from "../components/CustomModal";
+import { AuthContext } from '../services/auth';
 
 export default function DisplayFirebaseScreen (){
-  const [task, setTask] = useState([]);
+  const {task, setTask} = useContext(AuthContext);
+    console.log(task)
   const [detailsInfo, setDetailsInfo] = useState();
   const [modalOption, setModalOption] = useState(0);
   const [modalTitle, setModalTitle] = useState("");
