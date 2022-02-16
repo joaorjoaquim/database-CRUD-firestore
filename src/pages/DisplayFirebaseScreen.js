@@ -3,11 +3,10 @@ import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {AntDesign, Entypo} from '@expo/vector-icons';
 import database from '../services/firebaseConfig';
 import CustomModal from "../components/CustomModal";
-import { AuthContext } from '../services/auth';
+import { RootContext } from '../services/RootProvider';
 
 export default function DisplayFirebaseScreen (){
-  const {task, setTask} = useContext(AuthContext);
-    console.log(task)
+  const {taskList, setTaskList} = useContext(RootContext);
   const [detailsInfo, setDetailsInfo] = useState();
   const [modalOption, setModalOption] = useState(0);
   const [modalTitle, setModalTitle] = useState("");
@@ -22,7 +21,7 @@ export default function DisplayFirebaseScreen (){
                   let data = onSnapshot.data();
                   list.push({...data, id: onSnapshot.id}) //dados + document id
               })
-              setTask(list);
+              setTaskList(list);
           })
   }, []);
 
@@ -36,22 +35,22 @@ export default function DisplayFirebaseScreen (){
 
     function deleteTask(details) {
         database.db.collection("Tasks").doc(details.id).delete();
-        const tmpList = task.filter(ele => ele.id != details.id)
-        setTask(tmpList)
+        const tmpList = taskList.filter(ele => ele.id !== details.id)
+        setTaskList(tmpList)
     }
 
     function editTask(details){
         database.db.collection("Tasks").doc(details.id).update(details)
-        const tmpList = task.map(ele => ele.id == details.id ? details : ele)
-        setTask(tmpList)
+        const tmpList = taskList.map(ele => ele.id === details.id ? details : ele)
+        setTaskList(tmpList)
     }
 
   return (
       <View>
           <CustomModal option={modalOption} title={modalTitle} buttonText={modalButtonText} visibility={modalInfoVisible} setVisible={setModalInfoVisible} detailsInfo={detailsInfo} editTask={editTask} deleteTask={deleteTask}/>
           <FlatList
-              data={task}
-              keyExtractor={(item, key) => task.indexOf(item)}
+              data={taskList}
+              keyExtractor={item => taskList.indexOf(item)}
               renderItem={({item}) => (
                   <View style={{flexDirection:'row', height:80, borderBottomColor:'#323ca8', borderBottomWidth:2 ,marginVertical: 5, marginBottom: 5}}>
                     <View style={{width:'20%', flexDirection:'column', padding: 5, justifyContent:'space-between', alignItems:'center'}}>
