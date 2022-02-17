@@ -7,7 +7,7 @@ const Preload = ({navigation}) => {
     React.useEffect ( () => {
 
         AsyncStorage.getItem('auth').then( res => {
-            console.log(res)
+
             if (res != null){
                 navigation.replace("Home")
             }else{
