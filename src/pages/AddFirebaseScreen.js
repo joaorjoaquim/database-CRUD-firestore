@@ -44,10 +44,10 @@ export default function AddFirebaseScreen (){
   };
 
   const buscarCep = () => {
-    console.log(cep)
+
     Axios.get(`https://viacep.com.br/ws/${cep}/json/`)
       .then(response => {
-        console.log(response.data.logradouro)
+        
         setLogradouro(response.data.logradouro)
         setComplemento(response.data.complemento)
         setBairro(response.data.bairro)
