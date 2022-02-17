@@ -21,13 +21,14 @@
 
 - [About](#about)
 - [Getting Started](#getting_started)
-- [Usage](#usage)
+- [Structures](#structures)
 - [Built Using](#built_using)
 - [Authors](#authors)
 
 ## 🧐 About <a name = "about"></a>
 
-Write about 1-2 paragraphs describing the purpose of your project.
+This Project is a CRUD using Firestore from Firebase, with some adicional features implemented to it. 
+One of the features is in Login UI, wich uses Animated from React Native to treat some up and down scaling in the Sign In Form when the Keyboard is Open or Close. Others features used in this project are ViaCEP API, Masked Textinputs, Modals, Firebase Authentication, among others.
 
 ## 🏁 Getting Started <a name = "getting_started"></a>
 
@@ -60,10 +61,41 @@ until finished
 End with an example of getting some data out of the system or using it for a little demo.
 
 
-## 🎈 Usage <a name="usage"></a>
+## 📁 Structures <a name="structures"></a>
 
-Add notes about how to use the system.
+### This is How the Project is Structured.
 
+```
+app/
+├─ .expo
+├─ .expo-shared
+├─ assets
+├─ node_modules/
+├─ src/
+│  └─ assets/
+│  └─ components/
+│     └─ CustomModal/
+│  └─ core/
+│     └─ actions.js
+│  └─ pages/
+│     └─ AddFirebaseScreen.js
+│     └─ DisplayFirebaseScreen.js
+│     └─ LoginScreen.js
+│  └─ services/
+│     └─ firebaseConfig.js
+│     └─ preload.js
+│     └─ RootProvider.js
+│     └─ routes.js
+├─ .gitignore
+├─ App.js
+├─ app.jason
+├─ babel.config.js
+├─ google-services.json
+├─ package-lock.json
+├─ package.json
+├─ README.md
+└─ yarn.lock
+```
 
 ## ⛏️ Built Using <a name = "built_using"></a>
 
