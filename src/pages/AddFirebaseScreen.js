@@ -217,12 +217,13 @@ export default function AddFirebaseScreen (){
 
           <View style={styles.inputSelect}>
             <RNPickerSelect
-                onValueChange={(value) => setEstado(value)}
+                onValueChange={(estado) => setEstado(estado)}
                 placeholder={{
                   label: 'Selecione um estado',
-                  value: 'SC',
+                  value: '',
                   color: '#000'
                 }}
+                style={{ inputAndroid: { color: 'black' } }}
                 items={[
                     { label: 'Acre', value: 'AC' },
                     { label: 'Bahia', value: 'BA' },
