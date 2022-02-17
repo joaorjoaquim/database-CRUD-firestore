@@ -35,7 +35,7 @@ export default function AddFirebaseScreen (){
     setShow(!show);
   };
   const onChange = (event, selectedDate) => {
-    showMode();
+    setShow(false);
     setDatetest(selectedDate)
     let aux = format(selectedDate,'dd/MM/yyyy')
     setDate(aux);
@@ -227,6 +227,8 @@ export default function AddFirebaseScreen (){
                     { label: 'Rio de Janeiro', value: 'RJ' },
                     { label: 'Santa Catarina', value: 'SC' },
                     { label: 'Rio Grande do Sul', value: 'RS' },
+                    { label: 'São Paulo', value: 'SP' },
+                    { label: 'Paraná', value: 'PR' },
                 ]}
                 value={estado}
             />
