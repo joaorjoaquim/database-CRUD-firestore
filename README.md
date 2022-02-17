@@ -34,7 +34,7 @@ One of the features is in Login UI, wich uses Animated from React Native to trea
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.
 
-### Prerequisites
+### Prerequisites & Installing
 
 What things you need to install the software and how to install them.
 
@@ -42,7 +42,7 @@ What things you need to install the software and how to install them.
 Give examples
 ```
 
-### Installing
+### Runing & Usage
 
 A step by step series of examples that tell you how to get a development env running.
 
@@ -63,7 +63,7 @@ End with an example of getting some data out of the system or using it for a lit
 
 ## 📁 Structures <a name="structures"></a>
 
-### This is How the Project is Structured.
+### This is how the Project is structured.
 
 ```
 app/
