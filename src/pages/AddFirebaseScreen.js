@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {Alert, Keyboard, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {Entypo, MaterialIcons} from '@expo/vector-icons';
 import RNPickerSelect from 'react-native-picker-select';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -33,8 +33,10 @@ export default function AddFirebaseScreen (){
 
   const showMode = () => {
     setShow(!show);
+    Keyboard.dismiss();
   };
   const onChange = (event, selectedDate) => {
+    Keyboard.dismiss();
     setShow(false);
     setDatetest(selectedDate)
     let aux = format(selectedDate,'dd/MM/yyyy')
@@ -136,6 +138,8 @@ export default function AddFirebaseScreen (){
               placeholder="Data de Agendamento"
               secureTextEntry={false}
               autoCorrect={false}
+              onPressIn={showMode}
+              onFocus={Keyboard.dismiss}
               autoComplete="birthdate-full"
               onChangeText={(value) => setDate(value)}
               value={date}
